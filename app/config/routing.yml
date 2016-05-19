@@ -1,0 +1,8 @@
+ens_sylvain_davenel:
+    resource: "@EnsSylvainDavenelBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
