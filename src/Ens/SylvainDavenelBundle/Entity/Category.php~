@@ -9,7 +9,6 @@
 
 namespace Ens\SylvainDavenelBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ens\SylvainDavenelBundle\Entity\CategoryAffiliate;
 use Ens\SylvainDavenelBundle\Entity\Job;
@@ -18,7 +17,6 @@ use Ens\SylvainDavenelBundle\Entity\Job;
  * Class Category
  *
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="Ens\SylvainDavenelBundle\Repository\CategoryRepository")
  * @ORM\Table(name="t_category")
  * @package Ens\JobeetBundle\Entity\Category
  */
@@ -53,8 +51,6 @@ class Category
      * @ORM\OneToMany(targetEntity="CategoryAffiliate", mappedBy="category")
      */
     private $categoryAffiliates;
-
-    private $active_jobs;
 
     /**
      * @return int
@@ -116,24 +112,13 @@ class Category
     {
         return $this->getName();
     }
-
-    public function setActiveJobs($jobs)
-    {
-        $this->active_jobs = $jobs;
-    }
-
-    public function getActiveJobs()
-    {
-        return $this->active_jobs;
-    }
-
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->jobs = new ArrayCollection();
-        $this->categoryAffiliates = new ArrayCollection();
+        $this->jobs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categoryAffiliates = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -143,7 +128,7 @@ class Category
      *
      * @return Category
      */
-    public function addJob(Job $job)
+    public function addJob(\Ens\SylvainDavenelBundle\Entity\Job $job)
     {
         $this->jobs[] = $job;
 
@@ -153,9 +138,9 @@ class Category
     /**
      * Remove job
      *
-     * @param Job $job
+     * @param \Ens\SylvainDavenelBundle\Entity\Job $job
      */
-    public function removeJob(Job $job)
+    public function removeJob(\Ens\SylvainDavenelBundle\Entity\Job $job)
     {
         $this->jobs->removeElement($job);
     }
@@ -163,11 +148,11 @@ class Category
     /**
      * Add categoryAffiliate
      *
-     * @param CategoryAffiliate $categoryAffiliate
+     * @param \Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate
      *
      * @return Category
      */
-    public function addCategoryAffiliate(CategoryAffiliate $categoryAffiliate)
+    public function addCategoryAffiliate(\Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate)
     {
         $this->categoryAffiliates[] = $categoryAffiliate;
 
@@ -177,9 +162,9 @@ class Category
     /**
      * Remove categoryAffiliate
      *
-     * @param CategoryAffiliate $categoryAffiliate
+     * @param \Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate
      */
-    public function removeCategoryAffiliate(CategoryAffiliate $categoryAffiliate)
+    public function removeCategoryAffiliate(\Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate)
     {
         $this->categoryAffiliates->removeElement($categoryAffiliate);
     }
