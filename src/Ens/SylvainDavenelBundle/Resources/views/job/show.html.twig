@@ -1,14 +1,15 @@
 {% extends 'EnsSylvainDavenelBundle::layout.html.twig' %}
+
 {% block title %}
     {{ entity.company }} is looking for a {{ entity.position }}
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/ensjobeet/css/job.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/enssylvaindavenelbundle/css/job.css') }}" type="text/css" media="all" />
 {% endblock %}
 
-{% block content %}
+{% block body %}
     <div id="job">
         <h1>{{ entity.company }}</h1>
         <h2>{{ entity.location }}</h2>

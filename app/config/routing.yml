@@ -6,3 +6,7 @@ ens_sylvain_davenel:
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+EnsSylvainDavenelBundle_homepage:
+    pattern:  /
+    defaults: { _controller: EnsSylvainDavenelBundle:job:index }

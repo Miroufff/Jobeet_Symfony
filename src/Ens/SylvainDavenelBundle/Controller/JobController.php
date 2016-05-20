@@ -62,20 +62,20 @@ class JobController extends Controller
     /**
      * Finds and displays a Job entity.
      *
-     * @Route("/{id}", name="ens_job_show")
+     * @Route("/{id}/show", name="ens_job_show")
      * @Method("GET")
      */
-    public function showAction($id)
+    public function showAction(Job $job)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('EnsSylvainDavenelBundle:Job')->find($id);
+        $entity = $em->getRepository('EnsSylvainDavenelBundle:Job')->find($job);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($job);
 
         return $this->render('EnsSylvainDavenelBundle:job:show.html.twig', array(
             'entity'      => $entity,
@@ -138,10 +138,10 @@ class JobController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($job)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('ens_job_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('ens_job_delete', array('id' => $job->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
