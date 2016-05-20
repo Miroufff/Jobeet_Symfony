@@ -26,10 +26,10 @@ class JobController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $jobs = $em->getRepository('EnsSylvainDavenelBundle:Job')->findAll();
+        $entities = $em->getRepository('EnsSylvainDavenelBundle:Job')->findAll();
 
-        return $this->render('job/index.html.twig', array(
-            'jobs' => $jobs,
+        return $this->render('EnsSylvainDavenelBundle:job:index.html.twig', array(
+            'entities' => $entities,
         ));
     }
 
@@ -53,7 +53,7 @@ class JobController extends Controller
             return $this->redirectToRoute('ens_job_show', array('id' => $job->getId()));
         }
 
-        return $this->render('job/new.html.twig', array(
+        return $this->render('EnsSylvainDavenelBundle:job:new.html.twig', array(
             'job' => $job,
             'form' => $form->createView(),
         ));
@@ -65,13 +65,22 @@ class JobController extends Controller
      * @Route("/{id}", name="ens_job_show")
      * @Method("GET")
      */
-    public function showAction(Job $job)
+    public function showAction($id)
     {
-        $deleteForm = $this->createDeleteForm($job);
+        $em = $this->getDoctrine()->getEntityManager();
 
-        return $this->render('job/show.html.twig', array(
-            'job' => $job,
+        $entity = $em->getRepository('EnsSylvainDavenelBundle:Job')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Job entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('EnsSylvainDavenelBundle:job:show.html.twig', array(
+            'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+
         ));
     }
 
@@ -95,7 +104,7 @@ class JobController extends Controller
             return $this->redirectToRoute('ens_job_edit', array('id' => $job->getId()));
         }
 
-        return $this->render('job/edit.html.twig', array(
+        return $this->render('EnsSylvainDavenelBundle:job:edit.html.twig', array(
             'job' => $job,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -129,10 +138,10 @@ class JobController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Job $job)
+    private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('ens_job_delete', array('id' => $job->getId())))
+            ->setAction($this->generateUrl('ens_job_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm()
         ;
