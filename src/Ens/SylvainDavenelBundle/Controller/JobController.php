@@ -24,12 +24,15 @@ class JobController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getEntityManager();
 
-        $entities = $em->getRepository('EnsSylvainDavenelBundle:Job')->findAll();
+        $query = $em->createQuery(
+            'SELECT j FROM EnsSylvainDavenelBundle:Job j WHERE j.expiresAt > :date'
+        )->setParameter('date', date('Y-m-d H:i:s', time()));
+        $entities = $query->getResult();
 
         return $this->render('EnsSylvainDavenelBundle:job:index.html.twig', array(
-            'entities' => $entities,
+            'entities' => $entities
         ));
     }
 
@@ -62,7 +65,7 @@ class JobController extends Controller
     /**
      * Finds and displays a Job entity.
      *
-     * @Route("/{id}/show", name="ens_job_show")
+     * @Route("/{company}/{location}/{id}/{position}", name="ens_job_show")
      * @Method("GET")
      */
     public function showAction(Job $job)

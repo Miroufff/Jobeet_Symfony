@@ -9,6 +9,7 @@
 namespace Ens\SylvainDavenelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ens\SylvainDavenelBundle\Utils\Jobeet as Jobeet;
 
 /**
  * Class Job
@@ -382,6 +383,18 @@ class Job
     }
 
     /**
+     * @ORM\PrePersist
+     */
+    public function getExpiresAtValue()
+    {
+        if(!$this->getExpiresAt())
+        {
+            $now = $this->getCreatedAt() ? $this->getCreatedAt()->format('U') : time();
+            $this->expiresAt = new \DateTime(date('Y-m-d H:i:s', $now + 86400 * 30));
+        }
+    }
+
+    /**
      * @param datetime $expiresAt
      */
     public function setExpiresAt($expiresAt)
@@ -435,5 +448,29 @@ class Job
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompanySlug()
+    {
+        return Jobeet::slugify($this->getCompany());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPositionSlug()
+    {
+        return Jobeet::slugify($this->getPosition());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocationSlug()
+    {
+        return Jobeet::slugify($this->getLocation());
     }
 }

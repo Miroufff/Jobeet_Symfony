@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/enssylvaindavenelbundle/css/jobs.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/enssylvaindavenel/css/jobs.css') }}" type="text/css" media="all" />
 {% endblock %}
 
 {% block body %}
@@ -12,7 +12,7 @@
                 <tr class="{{ cycle(['even', 'odd'], loop.index) }}">
                     <td class="location">{{ entity.location }}</td>
                     <td class="position">
-                        <a href="{{ path('ens_job_show', { 'id': entity.id }) }}">{{ path('ens_job_show', { 'id': entity.id }) }}
+                        <a href="{{ path('ens_job_show', { 'id': entity.id, 'company': entity.companySlug, 'location': entity.locationSlug, 'position': entity.positionSlug}) }}">
                             {{ entity.position }}
                         </a>
                     </td>
