@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ens\SylvainDavenelBundle\Entity\CategoryAffiliate;
 use Ens\SylvainDavenelBundle\Entity\Job;
+use Ens\SylvainDavenelBundle\Utils\Jobeet as Jobeet;
 
 /**
  * Class Category
@@ -20,6 +21,7 @@ use Ens\SylvainDavenelBundle\Entity\Job;
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Ens\SylvainDavenelBundle\Repository\CategoryRepository")
  * @ORM\Table(name="t_category")
+ * @ORM\HasLifecycleCallbacks()
  * @package Ens\JobeetBundle\Entity\Category
  */
 class Category
@@ -41,6 +43,13 @@ class Category
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     */
+    private $slug;
+
+    /**
      * @var mixed
      *
      * @ORM\OneToMany(targetEntity="Job", mappedBy="category")
@@ -55,6 +64,8 @@ class Category
     private $categoryAffiliates;
 
     private $active_jobs;
+
+    private $more_jobs;
 
     /**
      * @return int
@@ -110,6 +121,47 @@ class Category
     public function setCategoryAffiliates($categoryAffiliates)
     {
         $this->categoryAffiliates = $categoryAffiliates;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return Jobeet::slugify($this->getName());
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Category
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function setSlugValue()
+    {
+        $this->slug = Jobeet::slugify($this->getName());
+    }
+
+    public function setMoreJobs($jobs)
+    {
+        $this->more_jobs = $jobs >=  0 ? $jobs : 0;
+    }
+
+    public function getMoreJobs()
+    {
+        return $this->more_jobs;
     }
 
     public function __toString()

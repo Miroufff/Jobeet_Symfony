@@ -15,9 +15,9 @@ use Ens\SylvainDavenelBundle\Utils\Jobeet as Jobeet;
  * Class Job
  *
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Ens\SylvainDavenelBundle\Repository\JobRepository")
  * @ORM\Table(name="t_job")
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass="SylvainDavenelBundle\Repository\JobRepository")
  * @package Ens\JobeetBundle\Entity\Job
  */
 class Job
@@ -473,5 +473,25 @@ class Job
     public function getLocationSlug()
     {
         return Jobeet::slugify($this->getLocation());
+    }
+
+    /**
+     * Get isPublic
+     *
+     * @return boolean
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
+    }
+
+    /**
+     * Get isActivated
+     *
+     * @return boolean
+     */
+    public function getIsActivated()
+    {
+        return $this->isActivated;
     }
 }

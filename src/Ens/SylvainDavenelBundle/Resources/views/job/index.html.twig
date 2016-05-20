@@ -9,12 +9,7 @@
     <div id="jobs">
         {% for category in categories %}
             <div>
-                <div class="category">
-                    <div class="feed">
-                        <a href="">Feed</a>
-                    </div>
-                    <h1>{{ category.name }}</h1>
-                </div>
+                <h1><a href="{{ path('ens_category_show', { 'slug': category.slug }) }}">{{ category.name }}</a></h1>
                 <table class="jobs">
                     {% for entity in category.activejobs %}
                         <tr class="{{ cycle(['even', 'odd'], loop.index) }}">
@@ -28,6 +23,12 @@
                         </tr>
                     {% endfor %}
                 </table>
+                {% if category.morejobs %}
+                    <div class="more_jobs">
+                        and <a href="{{ path('ens_category_show', { 'slug': category.slug }) }}">{{ category.morejobs }}</a>
+                        more...
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

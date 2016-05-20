@@ -25,6 +25,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $design = new Category();
         $design->setName('Design');
+        $design->setName('Design');
 
         $programming = new Category();
         $programming->setName('Programming');

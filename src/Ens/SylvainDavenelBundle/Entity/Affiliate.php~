@@ -8,6 +8,7 @@
 
 namespace Ens\SylvainDavenelBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -153,7 +154,7 @@ class Affiliate
      */
     public function __construct()
     {
-        $this->categoryAffiliates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categoryAffiliates = new ArrayCollection();
     }
 
     /**
@@ -183,11 +184,11 @@ class Affiliate
     /**
      * Add categoryAffiliate
      *
-     * @param \Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate
+     * @param CategoryAffiliate $categoryAffiliate
      *
      * @return Affiliate
      */
-    public function addCategoryAffiliate(\Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate)
+    public function addCategoryAffiliate(CategoryAffiliate $categoryAffiliate)
     {
         $this->categoryAffiliates[] = $categoryAffiliate;
 
@@ -197,9 +198,9 @@ class Affiliate
     /**
      * Remove categoryAffiliate
      *
-     * @param \Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate
+     * @param CategoryAffiliate $categoryAffiliate
      */
-    public function removeCategoryAffiliate(\Ens\SylvainDavenelBundle\Entity\CategoryAffiliate $categoryAffiliate)
+    public function removeCategoryAffiliate(CategoryAffiliate $categoryAffiliate)
     {
         $this->categoryAffiliates->removeElement($categoryAffiliate);
     }

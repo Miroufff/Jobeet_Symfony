@@ -26,9 +26,9 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $categories = $em->getRepository('EnsSylvainDavenelBundle:Category')->findAll();
+        $categories = $em->getRepository('Euse Symfony\Bundle\FrameworkBundle\Controller\Controller;nsSylvainDavenelBundle:Category')->findAll();
 
-        return $this->render('category/index.html.twig', array(
+        return $this->render('EnsSylvainDavenelBundle:category:index.html.twig', array(
             'categories' => $categories,
         ));
     }
@@ -53,7 +53,7 @@ class CategoryController extends Controller
             return $this->redirectToRoute('ens_category_show', array('id' => $category->getId()));
         }
 
-        return $this->render('category/new.html.twig', array(
+        return $this->render('EnsSylvainDavenelBundle:category:new.html.twig', array(
             'category' => $category,
             'form' => $form->createView(),
         ));
@@ -62,16 +62,23 @@ class CategoryController extends Controller
     /**
      * Finds and displays a Category entity.
      *
-     * @Route("/{id}", name="ens_category_show")
+     * @Route("/{slug}", name="ens_category_show")
      * @Method("GET")
      */
-    public function showAction(Category $category)
+    public function showAction($slug)
     {
-        $deleteForm = $this->createDeleteForm($category);
+        $em = $this->getDoctrine()->getEntityManager();
 
-        return $this->render('category/show.html.twig', array(
+        $category = $em->getRepository('EnsSylvainDavenelBundle:Category')->findOneBySlug($slug);
+
+        if (!$category) {
+            throw $this->createNotFoundException('Unable to find Category entity.');
+        }
+
+        $category->setActiveJobs($em->getRepository('EnsSylvainDavenelBundle:Job')->getActiveJobs($category->getId()));
+
+        return $this->render('EnsSylvainDavenelBundle:category:show.html.twig', array(
             'category' => $category,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -95,7 +102,7 @@ class CategoryController extends Controller
             return $this->redirectToRoute('ens_category_edit', array('id' => $category->getId()));
         }
 
-        return $this->render('category/edit.html.twig', array(
+        return $this->render('EnsSylvainDavenelBundle:category:edit.html.twig', array(
             'category' => $category,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
