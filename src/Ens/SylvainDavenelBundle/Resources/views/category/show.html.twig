@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('bundles/enssylvaindavenel/css/jobs.css') }}" type="text/css" media="all" />
 {% endblock %}
 
-{% block content %}
+{% block body %}
     <div class="category">
         <div class="feed">
             <a href="">Feed</a>
@@ -17,17 +17,41 @@
         <h1>{{ category.name }}</h1>
     </div>
 
-    <table class="jobs">
-        {% for entity in category.activejobs %}
-            <tr class="{{ cycle(['even', 'odd'], loop.index) }}">
-                <td class="location">{{ entity.location }}</td>
-                <td class="position">
-                    <a href="{{ path('ens_job_show', { 'id': entity.id, 'company': entity.companyslug, 'location': entity.locationslug, 'position': entity.positionslug }) }}">
-                        {{ entity.position }}
-                    </a>
-                </td>
-                <td class="company">{{ entity.company }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% include 'EnsSylvainDavenelBundle:job:list.html.twig' with {'jobs': category.activejobs} %}
+
+    {% if last_page > 1 %}
+        <div class="pagination">
+            <a href="{{ path('ens_category_show', { 'slug': category.slug, 'page': 1 }) }}">
+                <img src="{{ asset('bundles/enssylvaindavenel/images/first.png') }}" alt="First page" title="First page" />
+            </a>
+
+            <a href="{{ path('ens_category_show', { 'slug': category.slug, 'page': previous_page }) }}">
+                <img src="{{ asset('bundles/enssylvaindavenel/images/previous.png') }}" alt="Previous page" title="Previous page" />
+            </a>
+
+            {% for page in 1..last_page %}
+                {% if page == current_page %}
+                    {{ page }}
+                {% else %}
+                    <a href="{{ path('ens_category_show', { 'slug': category.slug, 'page': page }) }}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+
+            <a href="{{ path('ens_category_show', { 'slug': category.slug, 'page': next_page }) }}">
+                <img src="{{ asset('bundles/enssylvaindavenel/images/next.png') }}" alt="Next page" title="Next page" />
+            </a>
+
+            <a href="{{ path('ens_category_show', { 'slug': category.slug, 'page': last_page }) }}">
+                <img src="{{ asset('bundles/enssylvaindavenel/images/last.png') }}" alt="Last page" title="Last page" />
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="pagination_desc">
+        <strong>{{ total_jobs }}</strong> jobs in this category
+
+        {% if last_page > 1 %}
+            - page <strong>{{ current_page }}/{{ last_page }}</strong>
+        {% endif %}
+    </div>
 {% endblock %}
