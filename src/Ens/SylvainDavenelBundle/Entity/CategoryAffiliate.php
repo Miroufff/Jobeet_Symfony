@@ -45,6 +45,14 @@ class CategoryAffiliate
     private $affiliate;
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return mixed
      */
     public function getCategory()

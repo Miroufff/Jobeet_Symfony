@@ -53,6 +53,14 @@ class Category
     private $categoryAffiliates;
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -98,5 +106,10 @@ class Category
     public function setCategoryAffiliates($categoryAffiliates)
     {
         $this->categoryAffiliates = $categoryAffiliates;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

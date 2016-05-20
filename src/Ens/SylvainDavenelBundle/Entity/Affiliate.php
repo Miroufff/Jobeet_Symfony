@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  * @ORM\Table(name="t_affiliate")
+ * @ORM\HasLifecycleCallbacks()
  * @package Ens\SylvainDavenelBundle\Entity
  */
 class Affiliate
@@ -63,15 +64,25 @@ class Affiliate
      */
     private $categoryAffiliates;
 
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set createdAt
      *
      * @ORM\PrePersist
      */
-    public function setCreatedAt()
+    public function setCreatedAtValue()
     {
-        $this->createdAt = new \DateTime();
+        if(!$this->getCreatedAt())
+        {
+            $this->createdAt = new \DateTime();
+        }
     }
 
     /**

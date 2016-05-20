@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  * @ORM\Table(name="t_job")
+ * @ORM\HasLifecycleCallbacks()
  * @package Ens\JobeetBundle\Entity\Job
  */
 class Job
@@ -139,7 +140,23 @@ class Job
      * @ORM\ManyToOne(targetEntity="Ens\SylvainDavenelBundle\Entity\Category", inversedBy="jobs")
      * @ORM\JoinColumn(name="id_category", referencedColumnName="id")
      */
-    private $affiliate;
+    private $category;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Set createdAt
@@ -148,8 +165,12 @@ class Job
      */
     public function setCreatedAtValue()
     {
-        $this->createdAt = new \DateTime();
+        if(!$this->getCreatedAt())
+        {
+            $this->createdAt = new \DateTime();
+        }
     }
+
     /**
      * Set updatedAt
      *
@@ -403,16 +424,16 @@ class Job
     /**
      * @return mixed
      */
-    public function getAffiliate()
+    public function getCategory()
     {
-        return $this->affiliate;
+        return $this->category;
     }
 
     /**
-     * @param mixed $affiliate
+     * @param mixed $category
      */
-    public function setAffiliate($affiliate)
+    public function setCategory($category)
     {
-        $this->affiliate = $affiliate;
+        $this->category = $category;
     }
 }
