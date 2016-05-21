@@ -3,11 +3,11 @@
 namespace Ens\SylvainDavenelBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Ens\SylvainDavenelBundle\Entity\Category;
 use Ens\SylvainDavenelBundle\Form\CategoryType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Category controller.
@@ -26,7 +26,7 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $categories = $em->getRepository('Euse Symfony\Bundle\FrameworkBundle\Controller\Controller;nsSylvainDavenelBundle:Category')->findAll();
+        $categories = $em->getRepository('EnsSylvainDavenelBundle:Category')->findAll();
 
         return $this->render('EnsSylvainDavenelBundle:category:index.html.twig', array(
             'categories' => $categories,
