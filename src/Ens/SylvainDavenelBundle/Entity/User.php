@@ -9,6 +9,7 @@
 namespace Ens\SylvainDavenelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="t_user")
  * @package Ens\SylvainDavenelBundle\Entity
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var integer

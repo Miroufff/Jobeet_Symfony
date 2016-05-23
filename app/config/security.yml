@@ -15,7 +15,7 @@ security:
  
     providers:
         main:
-            entity: { class: Ens\JobeetBundle\Entity\User, property: username }
+            entity: { class: Ens\SylvainDavenelBundle\Entity\User, property: username }
  
     encoders:
         Ens\SylvainDavenelBundle\Entity\User: sha512
