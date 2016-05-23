@@ -11,11 +11,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class JobRepository extends EntityRepository
 {
-    public function getActiveJobs($idCategory = null, $max = null, $offset = null)
+    public function getActiveJobs($idCategory= null, $max = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('j')
             ->where('j.expiresAt > :date')
             ->setParameter('date', date('Y-m-d H:i:s', time()))
+            ->andWhere('j.isActivated = :activated')
+            ->setParameter('activated', 1)
             ->orderBy('j.expiresAt', 'DESC');
 
         if($max)
@@ -46,6 +48,8 @@ class JobRepository extends EntityRepository
             ->setParameter('id', $id)
             ->andWhere('j.expiresAt > :date')
             ->setParameter('date', date('Y-m-d H:i:s', time()))
+            ->andWhere('j.isActivated = :activated')
+            ->setParameter('activated', 1)
             ->setMaxResults(1)
             ->getQuery();
 
@@ -63,7 +67,9 @@ class JobRepository extends EntityRepository
         $qb = $this->createQueryBuilder('j')
             ->select('count(j.id)')
             ->where('j.expiresAt > :date')
-            ->setParameter('date', date('Y-m-d H:i:s', time()));
+            ->setParameter('date', date('Y-m-d H:i:s', time()))
+            ->andWhere('j.isActivated = :activated')
+            ->setParameter('activated', 1);
 
         if($idCategory)
         {

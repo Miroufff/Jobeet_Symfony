@@ -2,6 +2,7 @@
 
 namespace Ens\SylvainDavenelBundle\Form;
 
+use Ens\SylvainDavenelBundle\Entity\Job;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,18 +16,16 @@ class JobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('category');
-        $builder->add('type');
+        $builder->add('type', 'choice', array('choices' => Job::getTypes(), 'expanded' => true));
         $builder->add('company');
-        $builder->add('logo');
+        $builder->add('file', 'file', array('label' => 'Company logo', 'required' => false));
         $builder->add('url');
         $builder->add('position');
         $builder->add('location');
         $builder->add('description');
-        $builder->add('how_to_apply');
-        $builder->add('token');
-        $builder->add('is_public');
+        $builder->add('howToApply', null, array('label' => 'How to apply?'));
+        $builder->add('isPublic', null, array('label' => 'Public?'));
         $builder->add('email');
-        $builder->add('type', 'choice', array('choices' => Job::getTypes(), 'expanded' => true));
     }
     /**
      * @param OptionsResolver $resolver
@@ -40,6 +39,6 @@ class JobType extends AbstractType
 
     public function getName()
     {
-        return 'ens_sylvaindavenelbundle_jobtype';
+        return 'job';
     }
 }

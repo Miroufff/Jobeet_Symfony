@@ -79,4 +79,17 @@ class JobControllerTest extends WebTestCase
         $crawler = $client->request('GET', sprintf('/job/sensio-labs/paris-france/%d/web-developer-expired', $this->getExpiredJob()->getId()));
         $this->assertTrue(404 === $client->getResponse()->getStatusCode());
     }
+
+    public function testJobForm()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/ens_job/new');
+        $form = $crawler->selectButton('submit')->form(array(
+            'name' => 'Fabien',
+            'my_form[subject]' => 'Symfony Rocks!'
+        ));
+
+        $this->assertEquals('Ens\SylvainDavenelBundle\Controller\JobController::newAction', $client->getRequest()->attributes->get('_controller'));
+    }
 }

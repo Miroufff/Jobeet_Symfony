@@ -10,6 +10,7 @@ namespace Ens\SylvainDavenelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ens\SylvainDavenelBundle\Utils\Jobeet as Jobeet;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Job
@@ -35,6 +36,7 @@ class Job
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $type;
 
@@ -42,6 +44,7 @@ class Job
      * @var string
      *
      * @ORM\Column(name="company", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $company;
 
@@ -63,6 +66,7 @@ class Job
      * @var string
      *
      * @ORM\Column(name="position", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $position;
 
@@ -70,6 +74,7 @@ class Job
      * @var string
      *
      * @ORM\Column(name="location", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $location;
 
@@ -77,6 +82,7 @@ class Job
      * @var text
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -84,6 +90,7 @@ class Job
      * @var text
      *
      * @ORM\Column(name="howToApply", type="text")
+     * @Assert\NotBlank()
      */
     private $howToApply;
 
@@ -113,6 +120,7 @@ class Job
      *
      * @ORM\Column(name="email", type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
@@ -138,10 +146,17 @@ class Job
     private $updatedAt;
 
     /**
+     * @var file
+     *
+     */
+    public $file;
+
+    /**
      * @var mixed
      *
      * @ORM\ManyToOne(targetEntity="Ens\SylvainDavenelBundle\Entity\Category", inversedBy="jobs")
      * @ORM\JoinColumn(name="id_category", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $category;
 
@@ -198,6 +213,16 @@ class Job
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    public static function getTypes()
+    {
+        return array('full-time' => 'Full time', 'part-time' => 'Part time', 'freelance' => 'Freelance');
+    }
+
+    public static function getTypeValues()
+    {
+        return array_keys(self::getTypes());
     }
 
     /**
@@ -326,6 +351,17 @@ class Job
     public function setToken($token)
     {
         $this->token = $token;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setTokenValue()
+    {
+        if(!$this->getToken())
+        {
+            $this->token = sha1($this->getEmail().rand(11111, 99999));
+        }
     }
 
     /**
@@ -494,5 +530,83 @@ class Job
     public function getIsActivated()
     {
         return $this->isActivated;
+    }
+
+    protected function getUploadDir()
+    {
+        return 'uploads/jobs';
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->logo ? null : $this->getUploadDir().'/'.$this->logo;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->logo ? null : $this->getUploadRootDir().'/'.$this->logo;
+    }
+
+    /**
+     * @ORM\prePersist
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            // do whatever you want to generate a unique name
+            $this->logo = uniqid().'.'.$this->file->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->file->move($this->getUploadRootDir(), $this->logo);
+
+        unset($this->file);
+    }
+
+    /**
+     * @ORM\PostRemove
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
+    }
+
+    public function isExpired()
+    {
+        return $this->getDaysBeforeExpires() < 0;
+    }
+
+    public function expiresSoon()
+    {
+        return $this->getDaysBeforeExpires() < 5;
+    }
+
+    public function getDaysBeforeExpires()
+    {
+        return ceil(($this->getExpiresAt()->format('U') - time()) / 86400);
+    }
+
+    public function publish()
+    {
+        $this->setIsActivated(true);
     }
 }
