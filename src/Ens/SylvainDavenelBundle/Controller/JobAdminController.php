@@ -33,12 +33,13 @@ class JobAdminController extends Controller
                 $modelManager->update($selectedModel);
             }
         } catch (\Exception $e) {
-            $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+            $request->getSession()->getFlashBag()->add('sonata_flash_error', $e->getMessage());
 
             return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
         }
 
-        $this->get('session')->setFlash('sonata_flash_success',  sprintf('The selected jobs validity has been extended until %s.', date('m/d/Y', time() + 86400 * 30)));
+        $request->getSession()->getFlashBag()->add('sonata_flash_success', sprintf('The selected jobs validity has been extended until %s.', date('m/d/Y', time() + 86400 * 30)));
+
 
         return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
     }

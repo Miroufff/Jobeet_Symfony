@@ -128,6 +128,8 @@ class JobController extends Controller
         $em->persist($entity);
         $em->flush();
 
+        $request->getSession()->getFlashBag()->add('notice', 'Your job is now online for 30 days.');
+
         return $this->redirect($this->generateUrl('ens_job_preview', array(
             'company' => $entity->getCompanySlug(),
             'location' => $entity->getLocationSlug(),
@@ -162,7 +164,7 @@ class JobController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $this->get('session')->setFlash('notice', sprintf('Your job validity has been extended until %s.', $entity->getExpiresAt()->format('m/d/Y')));
+            $request->getSession()->getFlashBag()->add('notice', sprintf('Your job validity has been extended until %s.', $entity->getExpiresAt()->format('m/d/Y')));
         }
 
         return $this->redirect($this->generateUrl('ens_job_preview', array(
@@ -179,22 +181,37 @@ class JobController extends Controller
      * @Route("/{company}/{location}/{id}/{position}", name="ens_job_show")
      * @Method("GET")
      */
-    public function showAction(Job $job)
+    public function showAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('EnsSylvainDavenelBundle:Job')->getActiveJob($job);
+        $entity = $em->getRepository('EnsSylvainDavenelBundle:Job')->getActiveJob($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($job);
+        $session = $this->getRequest()->getSession();
+
+        // fetch jobs already stored in the job history
+        $jobs = $session->get('job_history', array());
+
+        // store the job as an array so we can put it in the session and avoid entity serialize errors
+        $job = array('id' => $entity->getId(), 'position' =>$entity->getPosition(), 'company' => $entity->getCompany(), 'companyslug' => $entity->getCompanySlug(), 'locationslug' => $entity->getLocationSlug(), 'positionslug' => $entity->getPositionSlug());
+
+        if (!in_array($job, $jobs)) {
+            // add the current job at the beginning of the array
+            array_unshift($jobs, $job);
+
+            // store the new job history back into the session
+            $session->set('job_history', array_slice($jobs, 0, 3));
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EnsSylvainDavenelBundle:job:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-
         ));
     }
 

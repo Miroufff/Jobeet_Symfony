@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Ens\SylvainDavenelBundle\Repository\JobRepository")
  * @ORM\Table(name="t_job")
  * @ORM\HasLifecycleCallbacks()
- * @package Ens\JobeetBundle\Entity\Job
+ * @package Ens\SylvainDavenelBundle\Entity\Job
  */
 class Job
 {
@@ -37,7 +37,6 @@ class Job
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
-     * @Assert\Choice(choices = { @Assert\Callback({"EnsSylvainDavenelBundle\Entity\Job", "getTypeValues"}) })
      */
     private $type;
 
@@ -99,7 +98,6 @@ class Job
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=255, unique=true)
-     * @Assert\NotBlank()
      */
     private $token;
 
@@ -590,5 +588,37 @@ class Job
         if ($file = $this->getAbsolutePath()) {
             unlink($file);
         }
+    }
+
+    public function isExpired()
+    {
+        return $this->getDaysBeforeExpires() < 0;
+    }
+
+    public function expiresSoon()
+    {
+        return $this->getDaysBeforeExpires() < 5;
+    }
+
+    public function getDaysBeforeExpires()
+    {
+        return ceil(($this->getExpiresAt()->format('U') - time()) / 86400);
+    }
+
+    public function publish()
+    {
+        $this->setIsActivated(true);
+    }
+
+    public function extend()
+    {
+        if (!$this->expiresSoon())
+        {
+            return false;
+        }
+
+        $this->expires_at = new \DateTime(date('Y-m-d H:i:s', time() + 86400 * 30));
+
+        return true;
     }
 }
