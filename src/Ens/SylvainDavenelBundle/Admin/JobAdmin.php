@@ -13,9 +13,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class JobAdmin extends Admin
 {
@@ -29,9 +27,9 @@ class JobAdmin extends Admin
     {
         $formMapper
             ->add('category')
-            ->add('type', ChoiceType::class, array('choices' => Job::getTypes(), 'expanded' => true))
+            ->add('type', 'choice', array('choices' => Job::getTypes(), 'expanded' => true))
             ->add('company')
-            ->add('file', FileType::class, array('label' => 'Company logo', 'required' => false))
+            ->add('file', 'file', array('label' => 'Company logo', 'required' => false))
             ->add('url')
             ->add('position')
             ->add('location')
@@ -96,5 +94,26 @@ class JobAdmin extends Admin
             ->add('email')
             ->add('expiresAt')
         ;
+    }
+
+    public function getBatchActions()
+    {
+        // retrieve the default (currently only the delete action) actions
+        $actions = parent::getBatchActions();
+
+        // check user permissions
+        if($this->hasRoute('edit') && $this->isGranted('EDIT') && $this->hasRoute('delete') && $this->isGranted('DELETE')){
+            $actions['extend'] = array(
+                'label'            => 'Extend',
+                'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
+            );
+
+            $actions['deleteNeverActivated'] = array(
+                'label'            => 'Delete never activated jobs',
+                'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
+            );
+        }
+
+        return $actions;
     }
 }
