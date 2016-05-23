@@ -10,11 +10,8 @@
 {% endblock %}
 
 {% block body %}
-    <div class="category">
-        <div class="feed">
-            <a href="">Feed</a>
-        </div>
-        <h1>{{ category.name }}</h1>
+    <div class="feed">
+        <a href="{{ path('ens_category_show', { 'slug': category.slug, '_format': 'atom' }) }}">Feed</a>
     </div>
 
     {% include 'EnsSylvainDavenelBundle:job:list.html.twig' with {'jobs': category.activejobs} %}

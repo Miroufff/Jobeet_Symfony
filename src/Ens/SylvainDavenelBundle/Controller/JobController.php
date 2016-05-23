@@ -34,10 +34,13 @@ class JobController extends Controller
             $category->setMoreJobs($em->getRepository('EnsSylvainDavenelBundle:Job')->countActiveJobs($category->getId()) - $this->container->getParameter('max_jobs_on_homepage'));
         }
 
-        return $this->render('EnsSylvainDavenelBundle:job:index.html.twig', array(
-            'categories' => $categories
-        ));
+        $format = $this->getRequest()->getRequestFormat();
 
+        return $this->render('EnsSylvainDavenelBundle:job:index.'.$format.'.twig', array(
+            'categories' => $categories,
+            'lastUpdated' => $em->getRepository('EnsSylvainDavenelBundle:job')->getLatestPost()->getCreatedAt()->format(DATE_ATOM),
+            'feedId' => sha1($this->get('router')->generate('ens_job_index', array('_format'=> 'atom'), true)),
+        ));
     }
 
     /**
