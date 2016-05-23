@@ -14,26 +14,20 @@ class JobType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('type')
-            ->add('company')
-            ->add('logo')
-            ->add('url')
-            ->add('position')
-            ->add('location')
-            ->add('description')
-            ->add('howToApply')
-            ->add('token')
-            ->add('isPublic')
-            ->add('isActivated')
-            ->add('email')
-            ->add('expiresAt', 'datetime')
-            ->add('createdAt', 'datetime')
-            ->add('updatedAt', 'datetime')
-            ->add('category')
-        ;
+        $builder->add('category');
+        $builder->add('type');
+        $builder->add('company');
+        $builder->add('logo');
+        $builder->add('url');
+        $builder->add('position');
+        $builder->add('location');
+        $builder->add('description');
+        $builder->add('how_to_apply');
+        $builder->add('token');
+        $builder->add('is_public');
+        $builder->add('email');
+        $builder->add('type', 'choice', array('choices' => Job::getTypes(), 'expanded' => true));
     }
-    
     /**
      * @param OptionsResolver $resolver
      */
@@ -42,5 +36,10 @@ class JobType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Ens\SylvainDavenelBundle\Entity\Job'
         ));
+    }
+
+    public function getName()
+    {
+        return 'ens_sylvaindavenelbundle_jobtype';
     }
 }
