@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Ens\SylvainDavenelBundle\Repository\JobRepository")
  * @ORM\Table(name="t_job")
  * @ORM\HasLifecycleCallbacks()
- * @package Ens\JobeetBundle\Entity\Job
+ * @package Ens\SylvainDavenelBundle\Entity\Job
  */
 class Job
 {

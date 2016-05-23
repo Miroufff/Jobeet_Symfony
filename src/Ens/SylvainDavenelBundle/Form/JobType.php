@@ -4,6 +4,8 @@ namespace Ens\SylvainDavenelBundle\Form;
 
 use Ens\SylvainDavenelBundle\Entity\Job;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,9 +18,13 @@ class JobType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('category');
-        $builder->add('type', 'choice', array('choices' => Job::getTypes(), 'expanded' => true));
+        $builder->add('type', ChoiceType::class, array(
+            'choices' => Job::getTypes(),
+            'expanded' => true,
+            'choices_as_values' => true,)
+        );
         $builder->add('company');
-        $builder->add('file', 'file', array('label' => 'Company logo', 'required' => false));
+        $builder->add('file', FileType::class, array('label' => 'Company logo', 'required' => false));
         $builder->add('url');
         $builder->add('position');
         $builder->add('location');
@@ -37,7 +43,7 @@ class JobType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'job';
     }

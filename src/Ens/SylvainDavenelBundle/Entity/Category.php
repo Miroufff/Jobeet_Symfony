@@ -22,7 +22,7 @@ use Ens\SylvainDavenelBundle\Utils\Jobeet as Jobeet;
  * @ORM\Entity(repositoryClass="Ens\SylvainDavenelBundle\Repository\CategoryRepository")
  * @ORM\Table(name="t_category")
  * @ORM\HasLifecycleCallbacks()
- * @package Ens\JobeetBundle\Entity\Category
+ * @package Ens\SylvainDavenelBundle\Entity\Category
  */
 class Category
 {

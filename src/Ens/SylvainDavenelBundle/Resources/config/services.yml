@@ -1,4 +1,12 @@
 services:
-#    ens_sylvain_davenel.example:
-#        class: Ens\SylvainDavenelBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    ens.sylvaindavenel.admin.category:
+        class: Ens\SylvainDavenelBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Categories }
+        arguments: [null, Ens\SylvainDavenelBundle\Entity\Category, EnsSylvainDavenelBundle:CategoryAdmin]
+
+    ens.sylvaindavenel.admin.job:
+        class: Ens\SylvainDavenelBundle\Admin\JobAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Jobs }
+        arguments: [null, Ens\SylvainDavenelBundle\Entity\Job, EnsSylvainDavenelBundle:JobAdmin]

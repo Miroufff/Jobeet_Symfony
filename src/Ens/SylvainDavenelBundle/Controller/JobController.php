@@ -49,7 +49,7 @@ class JobController extends Controller
     public function newAction(Request $request)
     {
         $job = new Job();
-        $form = $this->createForm(new JobType(), $job);
+        $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -83,7 +83,7 @@ class JobController extends Controller
     public function createAction(Request $request)
     {
         $entity  = new Job();
-        $form    = $this->createForm(new JobType(), $entity);
+        $form    = $this->createForm(JobType::class, $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -246,7 +246,7 @@ class JobController extends Controller
             throw $this->createNotFoundException('Job is activated and cannot be edited.');
         }
 
-        $editForm = $this->createForm(new JobType(), $entity);
+        $editForm = $this->createForm(JobType::class, $entity);
         $deleteForm = $this->createDeleteForm($token);
 
         return $this->render('EnsSylvainDavenelBundle:job:edit.html.twig', array(
@@ -273,7 +273,7 @@ class JobController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($entity);
-        $editForm = $this->createForm(new JobType(), $entity);
+        $editForm = $this->createForm(JobType::class, $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -294,7 +294,7 @@ class JobController extends Controller
      * Deletes a Job entity.
      *
      * @Route("/{token}/delete", name="ens_job_delete")
-     * @Method("DELETE")
+     * @Method({"POST"})
      */
     public function deleteAction(Request $request, $token)
     {
@@ -313,7 +313,7 @@ class JobController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('ens_job'));
+        return $this->redirect($this->generateUrl('ens_job_index'));
     }
 
     /**

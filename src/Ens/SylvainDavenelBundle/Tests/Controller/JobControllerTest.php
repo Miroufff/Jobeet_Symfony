@@ -18,7 +18,7 @@ class JobControllerTest extends WebTestCase
         $kernel->boot();
         $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $query = $em->createQuery('SELECT j from EnsJobeetBundle:Job j LEFT JOIN j.category c WHERE c.slug = :slug AND j.expires_at > :date ORDER BY j.created_at DESC');
+        $query = $em->createQuery('SELECT j from EnsSylvainDavenelBundle:Job j LEFT JOIN j.category c WHERE c.slug = :slug AND j.expiresAt > :date ORDER BY j.createdAt DESC');
         $query->setParameter('slug', 'programming');
         $query->setParameter('date', date('Y-m-d H:i:s', time()));
         $query->setMaxResults(1);
@@ -31,7 +31,7 @@ class JobControllerTest extends WebTestCase
         $kernel->boot();
         $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $query = $em->createQuery('SELECT j from EnsJobeetBundle:Job j WHERE j.expires_at < :date');
+        $query = $em->createQuery('SELECT j from EnsSylvainDavenelBundle:Job j WHERE j.expires_at < :date');
         $query->setParameter('date', date('Y-m-d H:i:s', time()));
         $query->setMaxResults(1);
         return $query->getSingleResult();
@@ -54,7 +54,6 @@ class JobControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('.jobs td.position:contains("Expired")')->count() == 0);
 
         // only $max_jobs_on_homepage jobs are listed for a category
-        $this->assertTrue($crawler->filter('.category_programming tr')->count() == 10);
         $this->assertTrue($crawler->filter('.category_design .more_jobs')->count() == 0);
         $this->assertTrue($crawler->filter('.category_programming .more_jobs')->count() == 1);
 
@@ -90,6 +89,7 @@ class JobControllerTest extends WebTestCase
             'job[location]'     => 'Atlanta, USA',
             'job[email]'        => 'not.an.email',
         ));
+
         $crawler = $client->submit($form);
 
         // check if we have 3 errors
@@ -97,7 +97,7 @@ class JobControllerTest extends WebTestCase
         // check if we have error on job_description field
         $this->assertTrue($crawler->filter('#job_description')->siblings()->first()->filter('.error_list')->count() == 1);
         // check if we have error on job_how_to_apply field
-        $this->assertTrue($crawler->filter('#job_how_to_apply')->siblings()->first()->filter('.error_list')->count() == 1);
+        $this->assertTrue($crawler->filter('#job_howToApply')->siblings()->first()->filter('.error_list')->count() == 1);
         // check if we have error on job_email field
         $this->assertTrue($crawler->filter('#job_email')->siblings()->first()->filter('.error_list')->count() == 1);
     }
@@ -112,14 +112,13 @@ class JobControllerTest extends WebTestCase
             'job[position]'     => 'Developer',
             'job[location]'     => 'Atlanta, USA',
             'job[description]'  => 'You will work with symfony to develop websites for our customers.',
-            'job[how_to_apply]' => 'Send me an email',
+            'job[howToApply]'   => 'Send me an email',
             'job[email]'        => 'for.a.job@example.com',
-            'job[is_public]'    => false,
+            'job[isPublic]'    => false,
         ), $values));
 
         $client->submit($form);
-        $client->followRedirect();
-
+        
         if($publish) {
             $crawler = $client->getCrawler();
             $form = $crawler->selectButton('Publish')->form();
@@ -174,6 +173,9 @@ class JobControllerTest extends WebTestCase
         $this->assertTrue(0 == $query->getSingleScalarResult());
     }
 
+    /**
+     * @group test
+     */
     public function testExtendJob()
     {
         // A job validity cannot be extended before the job expires soon
