@@ -3,9 +3,9 @@
     <title>Jobeet</title>
     <subtitle>Latest Jobs</subtitle>
     <link href="{{ url('ens_job_index', {'_format': 'atom'}) }}" rel="self"/>
-    <link href="{{ url('EnsJobeetBundle_homepage') }}"/>
+    <link href="{{ url('EnsSylvainDavenelBundle_homepage') }}"/>
     <updated>{{ lastUpdated }}</updated>
-    <author><name>Jobeet</name></author>
+    <author><name>Sylvain Davenel</name></author>
     <id>{{ feedId }}</id>
 
     {% for category in categories %}
