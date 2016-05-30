@@ -12,11 +12,11 @@ Répertoire github contenant le projet jobeet : https://github.com/Miroufff/Sylv
 Documentation contenant l'ensemble des commandes devant être jouer pour passer une installation viable
 	
 Requierement : 
-	- git
-	- composer
-	- php
-	- mySql
-	- apache
+- git
+- composer
+- php
+- mySql
+- apache
 
 (Ne pas oublier de lancer wamp server)
 
