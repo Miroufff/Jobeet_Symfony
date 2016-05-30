@@ -28,17 +28,17 @@ Accès au dépôt
 
 Installation des dépendance
 > composer install
-	Paramètres (Ces paramètres sont a modifier en fonction de l'environnement) : 
-		- database host : 127.0.0.1
-		- database port : null
-		- database name : jobeet
-		- database user : root
-		- database password : null
-		- mailer transport : smtp
-		- mailer host : 127.0.0.1
-		- mailer user : null
-		- mailer password : null
-		- secret : default value
+Paramètres (Ces paramètres sont a modifier en fonction de l'environnement) : 
+- database host : 127.0.0.1
+- database port : null
+- database name : jobeet
+- database user : root
+- database password : null
+- mailer transport : smtp
+- mailer host : 127.0.0.1
+- mailer user : null
+- mailer password : null
+- secret : default value
 
 Création de la base de données
 > php app/console doctrine:database:create
