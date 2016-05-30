@@ -28,6 +28,7 @@ Accès au dépôt
 
 Installation des dépendance
 > composer install
+
 Paramètres (Ces paramètres sont a modifier en fonction de l'environnement) : 
 - database host : 127.0.0.1
 - database port : null
@@ -47,7 +48,7 @@ Ajout des tables dans la base de données
 > php app/console doctrine:schema:update --force
 
 Ajout des données dans la base de données
-php app/console doctrine:fixtures:load
+> php app/console doctrine:fixtures:load
 
 Lancement du serveur
 > php app/console server:run
