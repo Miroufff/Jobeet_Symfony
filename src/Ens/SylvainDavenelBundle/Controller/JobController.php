@@ -114,6 +114,11 @@ class JobController extends Controller
      *
      * @Route("/{token}/publish", name="ens_job_publish")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param $token
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function publishAction(Request $request, $token)
     {
@@ -223,6 +228,10 @@ class JobController extends Controller
      *
      * @Route("/preview/{company}/{location}/{token}/{position}", name="ens_job_preview")
      * @Method("GET")
+     *
+     * @param $token
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function previewAction($token)
     {
@@ -315,6 +324,11 @@ class JobController extends Controller
      *
      * @Route("/{token}/delete", name="ens_job_delete")
      * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param $token
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, $token)
     {
@@ -351,6 +365,11 @@ class JobController extends Controller
             ;
     }
 
+    /**
+     * @param $token
+     *
+     * @return \Symfony\Component\Form\Form
+     */
     private function createPublishForm($token)
     {
         return $this->createFormBuilder(array('token' => $token))
@@ -359,6 +378,11 @@ class JobController extends Controller
             ;
     }
 
+    /**
+     * @param $token
+     * 
+     * @return \Symfony\Component\Form\Form
+     */
     private function createExtendForm($token)
     {
         return $this->createFormBuilder(array('token' => $token))

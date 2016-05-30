@@ -8,6 +8,7 @@
 
 namespace Ens\SylvainDavenelBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Ens\SylvainDavenelBundle\Utils\Jobeet as Jobeet;
 use Symfony\Component\Validator\Constraints as Assert;

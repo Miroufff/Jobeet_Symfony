@@ -129,6 +129,7 @@ body
 
 #sub_header
 {
+  border-radius: 15px;
   background: url(../images/bg-subheader.gif) bottom;
   width: 783px;
   height: 128px;
@@ -373,4 +374,9 @@ em
 #job_form .radio_list li
 {
   display: inline;
+}
+
+.listform
+{
+  text-indent: 30px;
 }

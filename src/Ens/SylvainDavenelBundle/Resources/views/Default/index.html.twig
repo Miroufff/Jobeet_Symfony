@@ -1,7 +1,61 @@
 {% extends 'EnsSylvainDavenelBundle::layout.html.twig' %}
 
 {% block body %}
-    Welcome to Sylvain Davenel jobeet website
+    <h1>Welcome to Sylvain Davenel jobeet website</h1>
+    </br>
+    </br>
+    <div>
+        <h2>Job forms :</h2>
+        <ul class="listform">
+            <li>
+                <a href="{{ path('ens_job_index') }}">
+                    - Job list
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('ens_job_index', {'_format': 'atom'}) }}">
+                    - Job list feed
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('ens_job_create') }}">
+                    - Job create form
+                </a>
+            </li>
+        </ul>
+        </br>
+        <h2>Category forms :</h2>
+        <ul class="listform">
+            <li>
+                <a href="{{ path('ens_category_index') }}">
+                    - Category list
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('ens_category_new') }}">
+                    - Category create form
+                </a>
+            </li>
+        </ul>
+        </br>
+        <h2>User form :</h2>
+        <ul class="listform">
+            <li>
+                <a href="{{ path('ens_login') }}">
+                    - Login
+                </a>
+            </li>
+        </ul>
+        </br>
+        <h2>Sonata form :</h2>
+        <ul class="listform">
+            <li>
+                <a href="/admin/dashboard">
+                    - Sonata Management
+                </a>
+            </li>
+        </ul>
+    </div>
     </br>
     </br>
     <div>

@@ -38,6 +38,10 @@ class CategoryController extends Controller
      *
      * @Route("/new", name="ens_category_new")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -50,7 +54,7 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('ens_category_show', array('id' => $category->getId()));
+            return $this->redirectToRoute('ens_category_show', array('slug' => $category->getSlug()));
         }
 
         return $this->render('EnsSylvainDavenelBundle:category:new.html.twig', array(
@@ -101,9 +105,16 @@ class CategoryController extends Controller
      *
      * @Route("/{id}/edit", name="ens_category_edit")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Category $category
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Category $category)
     {
+        var_dump($category);
+        exit;
         $deleteForm = $this->createDeleteForm($category);
         $editForm = $this->createForm('Ens\SylvainDavenelBundle\Form\CategoryType', $category);
         $editForm->handleRequest($request);
@@ -128,6 +139,11 @@ class CategoryController extends Controller
      *
      * @Route("/{id}", name="ens_category_delete")
      * @Method("DELETE")
+     *
+     * @param Request $request
+     * @param Category $category
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, Category $category)
     {

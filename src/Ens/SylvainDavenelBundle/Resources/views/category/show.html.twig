@@ -13,7 +13,6 @@
     <div class="feed">
         <a href="{{ path('ens_category_show', { 'slug': category.slug, '_format': 'atom' }) }}">Feed</a>
     </div>
-
     {% include 'EnsSylvainDavenelBundle:job:list.html.twig' with {'jobs': category.activejobs} %}
 
     {% if last_page > 1 %}
