@@ -50,6 +50,9 @@ Ajout des tables dans la base de données
 Ajout des données dans la base de données
 > php app/console doctrine:fixtures:load
 
+Ajout d'un admin
+> php app/console ens:jobeet:users admin admin
+
 Lancement du serveur
 > php app/console server:run
 
