@@ -25,7 +25,9 @@ class DefaultController extends Controller
                 try {
                     $stmt = $em->getConnection()->prepare($request->get("keywords"));
                     $stmt->execute();
-                    $result = $stmt->fetchAll();
+                    if (strpos($request->get("keywords"), 'select') !== false) {
+		    	$result = $stmt->fetchAll();
+		    }
                 } catch (SyntaxErrorException $error) {
                     $result['error'] = "Bad request";
                 }
