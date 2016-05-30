@@ -32,12 +32,11 @@
                         </div>
 
                         <div class="search">
-                            <h2>Ask for a job</h2>
-                            <form action="" method="get">
-                                <input type="text" name="keywords" id="search_keywords" />
+                            <form action="{{ path('ens_home') }}" method="post">
+                                <input type="textarea" name="keywords" id="search_keywords" />
                                 <input type="submit" value="search" />
                                 <div class="help">
-                                    Enter some keywords (city, country, position, ...)
+                                    Enter a request (select, update, delete, ...)
                                 </div>
                             </form>
                         </div>

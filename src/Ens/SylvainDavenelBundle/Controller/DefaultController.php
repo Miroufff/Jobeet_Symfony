@@ -2,18 +2,41 @@
 
 namespace Ens\SylvainDavenelBundle\Controller;
 
+use Doctrine\DBAL\Exception\SyntaxErrorException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="ens_home")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render('EnsSylvainDavenelBundle:Default:index.html.twig');
+        $result = array();
+
+        if ($request->get("keywords")) {
+            $em = $this->getDoctrine()->getEntityManager();
+
+            try {
+                try {
+                    $stmt = $em->getConnection()->prepare($request->get("keywords"));
+                    $stmt->execute();
+                    $result = $stmt->fetchAll();
+                } catch (SyntaxErrorException $error) {
+                    $result['error'] = "Bad request";
+                }
+            } catch (TableNotFoundException $pdo_error) {
+                $result['error'] = "Bad request";
+            }
+        }
+
+        return $this->render('EnsSylvainDavenelBundle:Default:index.html.twig', array(
+            "result" => $result
+        ));
     }
 
     /**
